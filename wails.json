@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "BB-DL",
+  "outputfilename": "BB-DL",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "long"
+  },
+  "info": {
+    "companyName": "BB-DL",
+    "productName": "BB-DL",
+    "productVersion": "1.0.12",
+    "copyright": "Copyright long",
+    "comments": "跨平台 Bilibili 下载器"
+  }
+}

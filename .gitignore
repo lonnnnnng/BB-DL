@@ -1,0 +1,21 @@
+.DS_Store
+
+# Go / release outputs
+/BB-DL
+/bbdown-go
+/bbdown
+/bbdown-desktop
+/dist/
+/frontend/node_modules/
+/frontend/dist/*
+!/frontend/dist/.gitkeep
+/build/bin/
+/.playwright-cli/
+
+# Local BBDown runtime files may contain cookies, tokens, archives, or QR login images.
+/BBDown.config
+/BBDown.data
+/BBDownTV.data
+/BBDownApp.data
+/BBDown.archives
+/qrcode.png

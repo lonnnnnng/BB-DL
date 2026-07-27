@@ -55,6 +55,37 @@ func TestTaskFileExistsActionSurvivesHistoryRetryAndFormFill(t *testing.T) {
 	}
 }
 
+func TestFillFormDataUsesSavedFileExistsActionForNewTask(t *testing.T) {
+	manager := NewTaskManager()
+	manager.preferences = defaultPreferences()
+	manager.preferences.FileExistsAction = "rename"
+	oldTask, err := taskFromInput(1, TaskInput{URL: "BV1J9EB6xEAB", Preferences: Preferences{
+		WorkDir: "/tmp/downloads", Mode: "下载", Channel: "WEB", FileExistsAction: "skip",
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	manager.tasks = []*desktopTask{oldTask}
+
+	input, err := manager.FillFormData(oldTask.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if input.FileExistsAction != "rename" {
+		t.Fatalf("filled form action = %q, want saved default rename", input.FileExistsAction)
+	}
+	if retry := oldTask.cloneForRetry(2); retry.FileExistsAction != "skip" {
+		t.Fatalf("retry action = %q, want original task snapshot skip", retry.FileExistsAction)
+	}
+	newTask, err := taskFromInput(3, input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if newTask.FileExistsAction != "rename" || !strings.Contains(strings.Join(newTask.Args, " "), "--file-exists-action rename") {
+		t.Fatalf("new task did not use saved default: action=%q args=%v", newTask.FileExistsAction, newTask.Args)
+	}
+}
+
 func TestStreamOptionsAndProgressFollowHelperProtocol(t *testing.T) {
 	logText := "共计2条视频流.\n  0. 1920x1080 HEVC\n  1. 1920x1080 AVC\n共计2条音频流.\n  0. 192K AAC\n  1. 132K AAC\n"
 	video, audio := streamIndexOptionsFromLog(logText)

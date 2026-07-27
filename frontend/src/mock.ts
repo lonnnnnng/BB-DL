@@ -52,7 +52,7 @@ export const mockBootstrap: Bootstrap = {
     task({ id: 16, url: 'BV1J9EB6xEAB · 视频下载', status: '失败', progress: 0.22, bytes: 12840122, actions: { canStart: true, canStop: false, canRetry: true, canDelete: true } }),
   ],
   summary: { total: 3, pending: 0, running: 1, success: 1, failed: 1, stopped: 0 },
-  version: '1.0.12',
+  version: '1.0.13',
   buildTime: '2026-07-26T10:58:00Z',
   status: '任务 #18 正在下载',
 }

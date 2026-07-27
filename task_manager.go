@@ -590,6 +590,8 @@ func (manager *TaskManager) FillFormData(id int) (TaskInput, error) {
 		return TaskInput{}, errors.New("登录任务不能填入下载表单")
 	}
 	input := taskInputFromTask(task)
+	// long 2026-07-27 14:35:00：填入表单用于创建新任务，同名文件策略应采用当前已保存默认值，避免旧任务的 skip 反向覆盖用户刚保存的 rename/overwrite。
+	input.FileExistsAction = manager.preferences.FileExistsAction
 	input.AutoQueue = manager.preferences.AutoQueue
 	input.Theme = manager.preferences.Theme
 	return input, nil

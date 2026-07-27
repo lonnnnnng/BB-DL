@@ -53,7 +53,7 @@ go build -o BB-DL ./cmd/bbdown
 从 GitHub Release 获取预编译包：
 
 ```sh
-gh release download v1.0.12 --repo lonnnnnng/BB-DL --pattern '*darwin_arm64*'
+gh release download v1.0.13 --repo lonnnnnng/BB-DL --pattern '*darwin_arm64*'
 ```
 
 GitHub Actions 额度不足或需要本机临时打包时：

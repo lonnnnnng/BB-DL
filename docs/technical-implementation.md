@@ -478,9 +478,9 @@ git push origin vX.Y.Z
 | Windows | `BB-DL_vX.Y.Z_desktop_windows_<arch>.zip`，内含 `BB-DL.exe` 和 `BB-DL-cli.exe` helper |
 | Linux | `BB-DL_vX.Y.Z_desktop_linux_<arch>.tar.gz`，内含 `BB-DL` 和 `BB-DL-cli` helper |
 
-桌面 release job 使用三平台矩阵：先安装 Node 22、前端依赖和 Wails 2.13.0；Linux runner 安装 GTK3、WebKit2GTK 4.1、OpenGL、X11 和 xkbcommon 开发库并使用 `webkit2_41` tag，Windows runner 通过 MSYS2/Mingw 提供 CGO 与归档工具，macOS runner 使用系统 WebKit 打包 `.app`。macOS 桌面包继续显式设置 `MACOSX_DEPLOYMENT_TARGET=11.0` 和 `-mmacosx-version-min=11.0`，helper 也强制 external linker 继承同一部署目标；workflow 会用 `plutil` 与 `otool` 校验 `LSMinimumSystemVersion=11.0`，以及主程序和 helper 的 Mach-O `minos 11.0`，避免 `macos-latest` 新 SDK 把产物标成只能在构建机系统版本上运行。`v1.0.12` 已由 macOS、Windows、Linux 三平台 runner 全部成功构建并通过发布后包结构与 digest 复验。
+桌面 release job 使用三平台矩阵：先安装 Node 22、前端依赖和 Wails 2.13.0；Linux runner 安装 GTK3、WebKit2GTK 4.1、OpenGL、X11 和 xkbcommon 开发库并使用 `webkit2_41` tag，Windows runner 通过 MSYS2/Mingw 提供 CGO 与归档工具，macOS runner 使用系统 WebKit 打包 `.app`。macOS 桌面包继续显式设置 `MACOSX_DEPLOYMENT_TARGET=11.0` 和 `-mmacosx-version-min=11.0`，helper 也强制 external linker 继承同一部署目标；workflow 会用 `plutil` 与 `otool` 校验 `LSMinimumSystemVersion=11.0`，以及主程序和 helper 的 Mach-O `minos 11.0`，避免 `macos-latest` 新 SDK 把产物标成只能在构建机系统版本上运行。构建脚本把 helper 直接注入 `build/bin/BB-DL.app` 后再整体签名和归档，使本地安装包与 Release 包共用同一份完整 `.app`。
 
-当前发布版本为 `v1.0.12`。仓库历史重置后只保留一个根提交、`main` 分支、`v1.0.12` tag 和对应 Release；旧 Releases、tags、Actions runs 与开发分支不再作为当前项目文档的一部分。该版本包含完整 Wails 桌面端、独立登录会话、同名文件三态策略、服务/桌面实时统计、中文 CLI 帮助和统一的 `BB-DL` 发布命名。
+当前发布版本为 `v1.0.13`。该版本更新 Bilibili 衍生应用图标，保证 macOS Wails 构建产物内置同版本 CLI helper，修复 URL 后置 `--file-exists-action` 的参数重排，并阻止旧任务通过“填入下载表单”覆盖当前同名文件默认策略。
 
 ## 后续技术路线
 

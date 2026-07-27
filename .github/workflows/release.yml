@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: "要发布或补传资产的版本标签，例如 v1.0.12"
+        description: "要发布或补传资产的版本标签，例如 v1.0.13"
         required: true
         type: string
 

@@ -773,6 +773,7 @@ func TestNormalizeFlagOrderMovesOptionsAfterURL(t *testing.T) {
 		"-p", "1",
 		"--multi-thread", "false",
 		"--file-pattern", "<videoTitle>",
+		"--file-exists-action", "skip",
 	}))
 
 	var opt bbdown.MyOption
@@ -783,7 +784,7 @@ func TestNormalizeFlagOrderMovesOptionsAfterURL(t *testing.T) {
 	if fs.NArg() != 1 || fs.Arg(0) != "BV1xx" {
 		t.Fatalf("positional args = %v", fs.Args())
 	}
-	if opt.SelectPage != "1" || opt.MultiThread || opt.FilePattern != "<videoTitle>" {
+	if opt.SelectPage != "1" || opt.MultiThread || opt.FilePattern != "<videoTitle>" || opt.FileExistsAction != bbdown.FileExistsActionSkip {
 		t.Fatalf("options not parsed after reordering: %+v", opt)
 	}
 }

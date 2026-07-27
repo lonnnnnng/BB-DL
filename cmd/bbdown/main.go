@@ -1511,8 +1511,9 @@ func optionTakesValue(arg string) bool {
 		return false
 	}
 	name := strings.TrimLeft(arg, "-")
+	// long 2026-07-27 13:40:00：URL 后置参数会先移到位置参数前；这里必须覆盖所有带值选项，否则选项值会被误报为多余参数。
 	switch name {
-	case "access-token", "aria2c-args", "aria2c-path", "aria2c-proxy", "area", "audio-index", "c", "config-file", "cookie", "ddf", "delay-per-page", "dfn-priority", "download-danmaku-formats", "e", "encoding-priority", "ep-host", "F", "ffmpeg-path", "file-pattern", "host", "language", "M", "mp4box-path", "multi-file-pattern", "p", "q", "select-page", "token", "tv-host", "ua", "upos-host", "user-agent", "video-index", "work-dir":
+	case "access-token", "aria2c-args", "aria2c-path", "aria2c-proxy", "area", "audio-index", "c", "config-file", "cookie", "ddf", "delay-per-page", "dfn-priority", "download-danmaku-formats", "e", "encoding-priority", "ep-host", "F", "ffmpeg-path", "file-exists-action", "file-pattern", "host", "language", "M", "mp4box-path", "multi-file-pattern", "p", "q", "select-page", "token", "tv-host", "ua", "upos-host", "user-agent", "video-index", "work-dir":
 		return true
 	default:
 		return false

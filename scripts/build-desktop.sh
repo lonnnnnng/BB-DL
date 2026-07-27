@@ -85,14 +85,14 @@ build_desktop() {
 
 if [[ "$GOOS_VALUE" == "darwin" ]]; then
   app_dir="$TMP_DIR/BB-DL.app"
-  contents_dir="$app_dir/Contents"
-  macos_dir="$contents_dir/MacOS"
-  resources_dir="$contents_dir/Resources"
   build_desktop "BB-DL"
   source_app="build/bin/BB-DL.app"
   [[ -d "$source_app" ]] || { echo "Wails 未生成预期应用包：$source_app" >&2; exit 1; }
-  ditto "$source_app" "$app_dir"
+  contents_dir="$source_app/Contents"
+  macos_dir="$contents_dir/MacOS"
+  resources_dir="$contents_dir/Resources"
   mkdir -p "$macos_dir" "$resources_dir"
+  # long 2026-07-27 12:15:00：本地安装和发布归档必须共用同一个完整应用包，避免裸 Wails 产物缺少 CLI helper，直到登录或下载时才报错。
   build_helper "$resources_dir/$helper_name"
   /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${VERSION#v}" "$contents_dir/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION#v}" "$contents_dir/Info.plist"
@@ -100,8 +100,9 @@ if [[ "$GOOS_VALUE" == "darwin" ]]; then
   /usr/libexec/PlistBuddy -c "Set :LSMinimumSystemVersion ${MACOSX_DEPLOYMENT_TARGET}" "$contents_dir/Info.plist"
   chmod +x "$macos_dir/BB-DL" "$resources_dir/$helper_name"
   if command -v codesign >/dev/null 2>&1; then
-    codesign --force --deep --sign - "$app_dir" >/dev/null
+    codesign --force --deep --sign - "$source_app" >/dev/null
   fi
+  ditto "$source_app" "$app_dir"
   ditto -c -k --norsrc --keepParent "$app_dir" "$OUT_DIR/$PACKAGE_NAME.zip"
 else
   package_dir="$TMP_DIR/$PACKAGE_NAME"

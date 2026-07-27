@@ -1,6 +1,6 @@
 # BB-DL 复刻进度
 
-更新时间：2026-07-27 10:09:10 北京时间
+更新时间：2026-07-27 15:06:31 北京时间
 
 本文只记录当前代码快照，不保留逐版本流水账。原始实现参考 [nilaoda/BBDown](https://github.com/nilaoda/BBDown)，Go 复刻仓库为 [lonnnnnng/BB-DL](https://github.com/lonnnnnng/BB-DL)。
 
@@ -8,7 +8,7 @@
 
 | 项目 | 当前状态 |
 | --- | --- |
-| 当前版本 | `v1.0.12` |
+| 当前版本 | `v1.0.13` |
 | CLI | Go 单二进制 `BB-DL` / `BB-DL.exe` |
 | 桌面端 | Wails 2 + React 19 + TypeScript + Vite |
 | 桌面 helper | `BB-DL-cli` / `BB-DL-cli.exe` |
@@ -125,20 +125,20 @@
 CLI 资产：
 
 ```text
-BB-DL_v1.0.12_cli_darwin_amd64.tar.gz
-BB-DL_v1.0.12_cli_darwin_arm64.tar.gz
-BB-DL_v1.0.12_cli_linux_amd64.tar.gz
-BB-DL_v1.0.12_cli_linux_arm64.tar.gz
-BB-DL_v1.0.12_cli_windows_amd64.zip
-BB-DL_v1.0.12_cli_windows_arm64.zip
+BB-DL_v1.0.13_cli_darwin_amd64.tar.gz
+BB-DL_v1.0.13_cli_darwin_arm64.tar.gz
+BB-DL_v1.0.13_cli_linux_amd64.tar.gz
+BB-DL_v1.0.13_cli_linux_arm64.tar.gz
+BB-DL_v1.0.13_cli_windows_amd64.zip
+BB-DL_v1.0.13_cli_windows_arm64.zip
 ```
 
 桌面资产：
 
 ```text
-BB-DL_v1.0.12_desktop_darwin_arm64.zip
-BB-DL_v1.0.12_desktop_linux_amd64.tar.gz
-BB-DL_v1.0.12_desktop_windows_amd64.zip
+BB-DL_v1.0.13_desktop_darwin_arm64.zip
+BB-DL_v1.0.13_desktop_linux_amd64.tar.gz
+BB-DL_v1.0.13_desktop_windows_amd64.zip
 ```
 
 每个独立 CLI 包只含 `BB-DL` / `BB-DL.exe`。macOS 桌面包只含 `BB-DL.app`；Windows/Linux 桌面包只含 GUI 与 `BB-DL-cli` helper，不打包 README、Markdown 或 `docs/`。

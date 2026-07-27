@@ -75,6 +75,16 @@ npm run dev --prefix frontend
 ./scripts/build-desktop.sh
 ```
 
+应用图标源稿为 `build/appicon.svg`。修改源稿后运行以下命令，同时生成 Wails/macOS 使用的 `build/appicon.png` 和 Windows 可执行文件使用的多尺寸 `build/windows/icon.ico`：
+
+```sh
+go run ./tools/icon-generator
+```
+
+macOS 构建会把 PNG 转成 `BB-DL.app/Contents/Resources/iconfile.icns`；Windows 构建会把 ICO 编译进 `BB-DL.exe`。当前 Linux 便携包只有两个可执行文件，没有 `.desktop` 安装入口，因此不声明应用菜单图标。
+
+macOS 构建完成后，`build/bin/BB-DL.app` 和发布 ZIP 中的 `.app` 都已经包含 `Contents/Resources/BB-DL-cli` 并完成整体签名，可以直接安装。不要使用单独执行 `wails build` 产生的裸应用包；它不包含登录和下载所需的 CLI helper。
+
 脚本会先由 Wails 构建桌面程序，再构建同版本 CLI helper，输出到 `dist/desktop`：
 
 | 平台 | 输出 |
@@ -91,7 +101,7 @@ Wails 桌面应用应在目标系统原生构建：
 - Windows 使用系统 WebView2；CI 通过 MSYS2/Mingw 提供 Go CGO 编译和归档工具。
 - Ubuntu 24.04 安装 `libgtk-3-dev`、`libwebkit2gtk-4.1-dev`、`libgl1-mesa-dev`、`xorg-dev`、`libxkbcommon-dev`，构建和测试使用 `webkit2_41` tag。
 
-推送 `v*` tag 或手动触发 `release.yml` 后，三套目标系统 runner 会分别执行测试、Wails 构建和 `scripts/verify-artifacts.sh` 包结构校验。`v1.0.12` 已由 macOS、Windows、Linux runner 全部构建并上传，三个桌面包下载复验通过。
+推送 `v*` tag 或手动触发 `release.yml` 后，三套目标系统 runner 会分别执行测试、Wails 构建和 `scripts/verify-artifacts.sh` 包结构校验。`v1.0.13` 的 macOS、Windows、Linux 桌面包沿用该矩阵构建，并在发布阶段下载复验三个资产。
 
 ## 后端与事件
 
@@ -110,7 +120,7 @@ Wails 绑定入口是 `app.go`，任务生命周期由 `task_manager.go` 管理�
 
 后端同一时间只运行一个 helper。`RetryFailedTasks` 只把失败/停止任务的副本追加到队尾，自动队列始终通过 `StartNextPending` 启动最早等待任务。启动前工具预检、目录创建或 helper 准备失败也会写入失败日志，并在开启自动队列时继续下一条任务。
 
-同名文件策略保存在 `preferences.json` 和任务历史中，并映射为 `--file-exists-action`。重试、历史恢复和“填入下载表单”都会保留任务原值；旧偏好或旧任务缺少该字段时自动回退为 `skip`。高级用户仍可在额外参数中追加同名 CLI 参数，额外参数位于表单参数之后，因此最后一个值生效。
+同名文件策略保存在 `preferences.json` 和任务历史中，并映射为 `--file-exists-action`。重试和历史恢复保留任务原值；“填入下载表单”用于创建新任务，因此采用设置中当前保存的默认策略，避免旧任务反向覆盖新设置。旧偏好或旧任务缺少该字段时自动回退为 `skip`。高级用户仍可在额外参数中追加同名 CLI 参数，额外参数位于表单参数之后，因此最后一个值生效。
 
 ## 进度与日志协议
 
@@ -160,4 +170,4 @@ Wails 绑定入口是 `app.go`，任务生命周期由 `task_manager.go` 管理�
 - `https://www.bilibili.com/video/BV1J9EB6xEAB` 未登录真实解析，识别 6 条视频流和 3 条音频流。
 - 1440x900、1040x720 的浅色/深色界面，以及设置抽屉和控件文字溢出检查。
 
-`v1.0.12` 的 Windows/Linux Wails 桌面包已在真实 GitHub runner 完成测试、构建、包结构校验和上传；发布后下载复验确认包内分别只有 `BB-DL.exe` / `BB-DL` 与同版本 CLI helper。
+`v1.0.13` 的发布流程会从 GitHub Release 下载 macOS、Windows、Linux 三个 Wails 桌面包复验；Windows/Linux 包内应分别只有 `BB-DL.exe` / `BB-DL` 与同版本 CLI helper，macOS 包内应只有包含 helper 的 `BB-DL.app`。

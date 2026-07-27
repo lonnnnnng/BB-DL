@@ -53,7 +53,7 @@ function App() {
   const [loginSession, setLoginSession] = useState<LoginSession | null>(null)
   const loginIDRef = useRef(0)
   const [loginQRCode, setLoginQRCode] = useState('')
-  const [version, setVersion] = useState('1.0.12')
+  const [version, setVersion] = useState('1.0.13')
   const [buildTime, setBuildTime] = useState('')
   const [status, setStatus] = useState('正在初始化...')
   const [toast, setToast] = useState<{ message: string; tone: ToastTone }>({ message: '', tone: 'neutral' })
